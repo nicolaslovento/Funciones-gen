@@ -1,0 +1,280 @@
+    
+    ***********************************************************************************************************
+    //MENU DE OPCIONES
+    char seguir='s';
+    int opcion;
+    
+
+    do
+    {
+        printf("1-\n");
+        printf("2- \n");
+        printf("3-\n");
+        printf("4-\n");
+        printf("5- \n");
+        printf("6- \n");
+        printf("7-\n");
+        printf("8-SALIR \n");
+        
+
+
+        scanf(" %d",&opcion);
+
+        switch(opcion)
+        {
+
+            case 1:
+
+                
+                system("pause");
+                system("cls");
+            break;
+
+            case 2:
+                
+                
+                system("pause");
+                system("cls");
+            break;
+
+            case 3:
+                
+                system("pause");
+                system("cls");
+            break;
+
+            case 4:
+
+                
+                system("pause");
+                system("cls");
+            break;
+
+            case 5:
+               
+                system("pause");
+                system("cls");
+
+            break;
+            case 6:
+                
+                system("pause");
+                system("cls");
+            break;
+            case 7:
+               
+                system("pause");
+                system("cls");
+            break;
+            case 8:
+                seguir='n';
+                system("pause");
+                system("cls");
+            break;
+            
+}
+
+}while(seguir=='s');
+*********************************************************************************************************************************
+//INICIALIZAR VARIABLE EN 0
+
+void inicializar(Tipo array[],int tam)
+{
+    int i;
+    for(i=0;i<tam;i++)
+    {
+       array[i].estado=0;
+
+    }
+}
+
+**********************************************************************************************************************************
+//Devuelve el id del ultimo activo +1
+int devolverSiguienteId(Tipo array[],int tam)
+{
+    int retorno = 0;
+    int i;
+    if(tam > 0 && array != NULL)
+    {
+        for(i=0; i<tam; i++)
+        {
+            if(array[i].estado == 1)
+            {
+                    if(array[i].id>retorno)
+                    {
+                         retorno=array[i].id;
+                    }
+
+            }
+
+        }
+    }
+     return retorno+1;
+}
+
+***********************************************************************************************************************************
+//BUSCAR LUGAR LIBRE. 
+int buscarLugarLibre(Tipo array[],int tam)//
+
+{
+    int retorno=-1;
+    int i;
+    if(tam > 0 && array != NULL)
+    {
+        retorno = -2;
+        for(i=0;i<tam;i++)
+        {
+            if(array[i].estado == 0)
+            {
+                retorno = i;
+                break;
+            }
+        }
+    }
+    return retorno;
+}
+********************************************************************************************************************************************
+//DAR DE ALTA.
+int darAlta(Tipo array[],int tam)//
+{
+
+    char nombre[50];
+    int id;
+    int indice;
+    int retorno=-1;
+    if(tam > 0 && array != NULL)
+    {
+        retorno = -2;
+        indice =buscarLugarLibre(array,tam);//busca el lugar libre, devuelve i=indice.
+        if(indice >= 0)
+        {
+            retorno = -3;
+            id = devolverSiguienteId(array,tam);//Devuelve siguiente id 
+
+            retorno = 0;
+            printf("Ingrese nombre: ");
+            fflush(stdin);
+            gets(array[indice].nombre);//Pide y guarda string
+            printf("Ingrese apellido: ");
+            fflush(stdin);
+            gets(array[indice].apellido);//Pide y guarda string
+            printf("Ingrese direccion: ");
+            fflush(stdin);
+            gets(array[indice].direccion);//Pide y guarda string
+            printf("Ingrese numero de tarjeta de credito: ");
+            scanf("%d",&array[indice].tarjeta);//pide y guarda entero
+            array[indice].id = id;
+            array[indice].estado = 1;
+            printf("Se dio de alta con exito\n");
+        }
+    }
+    return retorno;
+}
+******************************************************************************************************************************************
+//MODIFICAR UN SOLO CAMPO
+void modificar(Tipo array[],int tam)//
+{
+    int id;
+    int i;
+    char respuesta;
+    int tarjeta;
+    printf(" Ingrese su id: ");
+    scanf(" %d",&id);
+
+    for(i=0;i<tam;i++)
+    {
+        if(array[i].estado==1)
+        {
+
+            if(array[i].id==id)
+            {
+            printf("Ingrese nueva tarjeta:");
+            scanf(" %d",&tarjeta);
+            printf("Esta seguro ?(s/n)");
+            fflush(stdin);
+            respuesta=getchar();
+            if(respuesta=='s')
+            {
+                array[i].tarjeta=tarjeta;
+                 printf("Se modifico con exito \n");break;
+            }else
+                {
+                printf("Operacion cancelada \n");break;
+                }
+            }
+        }
+    }
+        printf("No se encontro el usuario\n");
+
+}
+**********************************************************************************************************************************************
+//FUNCION MOSTRAR 
+void mostrarTipo(Tipo array[],int tam){
+    int i;
+    printf("Id :|  Nombre  |  Apellido  |  Direccion| \n");
+    for (i = 0; i < tam; i++) {
+        if (array[i].estado != 0) {
+
+
+            printf("%d  %-10s  %-10s  %-10s   \n", //Variables.);
+            printf("\n");
+        }
+    }
+}
+************************************************************************************************************************************************
+
+void darBaja(Tipo array[],int tam)
+{
+    int id;
+    int i;
+
+    //ACA PUEDE IR UNA FUNCION MOSTRAR.
+
+    printf(" Ingrese su id: ");
+    scanf(" %d",&id);
+
+    for(i=0;i<tam;i++)
+    {
+        if(array[i].id==id)
+        {
+            array[i].estado=0;
+            printf("El x fue dado de baja \n");
+            break;
+        }
+    }
+
+}
+
+
+**************************************************************************************************************************************************
+void ordenarAlfabeticamente(Tipo array[],int tam)
+{
+    int i;
+    int j;
+    int n;
+    char aux[50];
+    for(i=0;i<tam-1;i++)
+    {
+        for(j=i+1;j<tam;j++)
+            {
+                if(array[i].estado==1 && array[j].estado==1)
+                {
+                    n=strcmp(array[i].patente,array[j].patente);
+                        if(n>0)
+                 {
+                        strcpy(aux,array[i].patente);
+                        strcpy(array[i].patente,array[j].patente);
+                        strcpy(array[j].patente,aux);
+
+                 }
+                }
+
+
+            }
+
+
+        }
+
+    }
+
+    *************************************************************************************************************************************************
